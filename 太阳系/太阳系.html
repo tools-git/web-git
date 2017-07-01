@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #000020;
+            overflow:hidden;
+        }
+
+        .big {
+            width: 100%;
+            height: 100%;
+            position:relative;
+            transform-style: preserve-3d;
+            transform: rotateX(70deg);
+        }
+
+        .big > * {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .sun {
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+            border-radius: 50%;
+            box-shadow: 0 0 50px 5px red inset, 0 0 20px 5px red;
+            transform: translate(-50%, -50%) rotateX(-70deg);
+        }
+
+        .mercury {
+            width: 200px;
+            height: 200px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            animation:move 8s linear infinite;
+        }
+
+        .mercury::before {
+            content: '';
+            width: 30px;
+            height: 30px;
+            /*background-color: orange;*/
+            background-image: radial-gradient(14px at 12px 12px,#fff,orange);
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            /*transform: translate(-50%, -50%);*/
+            transform: translate(-50%, -50%) rotateX(-70deg);
+            animation:move1 8s linear infinite;
+        }
+
+        .venus {
+            width: 350px;
+            height: 350px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            animation:move 10s linear infinite;
+        }
+
+        .venus::before {
+            content: '';
+            width: 60px;
+            height: 60px;
+            /*background-color: orangered;*/
+            background-image: radial-gradient(30px at 24px 24px,#fff,orangered);
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            /*transform: translate(-50%, -50%);*/
+            transform: translate(-50%, -50%) rotateX(-70deg);
+            animation:move1 10s linear infinite;
+        }
+
+        .earth {
+            width: 500px;
+            height: 500px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            animation:move 12s linear infinite;
+        }
+
+        .earth::before {
+            content: '';
+            width: 60px;
+            height: 60px;
+            /*background-color: blue;*/
+            background-image: radial-gradient(30px at 24px 24px,#fff,blue);
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            /*transform: translate(-50%, -50%);*/
+            transform: translate(-50%, -50%) rotateX(-70deg);
+            animation:move1 12s linear infinite;
+        }
+
+        .mars {
+            width: 650px;
+            height: 650px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            animation:move 14s linear infinite;
+        }
+
+        .mars::before {
+            content: '';
+            width: 40px;
+            height: 40px;
+            /*background-color: brown;*/
+            background-image: radial-gradient(20px at 16px 16px,#fff,brown);
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            /*transform: translate(-50%, -50%);*/
+            transform: translate(-50%, -50%) rotateX(-70deg);
+            animation:move1 14s linear infinite;
+        }
+
+
+        .jupiter {
+            width: 800px;
+            height: 800px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            transform: translate(-50%, -50%);
+            animation:move 16s linear infinite;
+        }
+        .jupiter::before {
+            content: '';
+            width: 80px;
+            height: 80px;
+            /*background-color: saddlebrown;*/
+            border-radius: 50%;
+            background-image: radial-gradient(40px at 35px 35px,#fff,saddlebrown);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translate(-50%, -50%) rotateX(-70deg) rotateY(0deg);
+            animation:move1 16s linear infinite;
+        }
+        @keyframes move {
+            0%{
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100%{
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+        @keyframes move1 {
+            0%{
+                transform: translate(-50%, -50%) rotateX(-70deg) rotateY(0deg);
+            }
+            25%{
+                transform: translate(-50%, -50%) rotateX(0deg) rotateY(70deg);
+            }
+            50%{
+                transform: translate(-50%, -50%) rotateX(70deg) rotateY(0deg);
+            }
+            75%{
+                transform: translate(-50%, -50%) rotateX(0deg) rotateY(-70deg);
+            }
+            100%{
+                transform: translate(-50%, -50%) rotateX(-70deg) rotateY(0deg);
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="big">
+    <div class="sun"></div>
+    <div class="mercury"></div>
+    <div class="venus"></div>
+    <div class="earth"></div>
+    <div class="mars"></div>
+    <div class="jupiter"></div>
+    <div class="saturn"></div>
+    <div class="king"></div>
+    <div class="neptune"></div>
+</div>
+</body>
+</html>
