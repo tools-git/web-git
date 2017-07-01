@@ -1,0 +1,17 @@
+创建空目录:mkdir 目录名
+进入目录中:cd 目录名
+显示当前目录:pwd
+将当前目录变成仓库:git init
+将文件添加到仓库暂存:git add 文件名
+将暂存所有文件提交到仓库:git commit -m "提交说明"
+显示仓库当前状态:git status
+查看文件差异:git diff 文件名
+显示提交日志:git log
+回退到上n个版本:git reset --hard HEAD^ n个^
+查看文件内容:cat 文件名
+回退到commitid的版本:git reset --hard commitid
+查看命令:git reflog
+丢弃工作区的修改,一键还原最新版本:git checkout --文件名
+撤销暂存区的修改,重回工作区:git reset HEAD 文件名
+删除文件:rm 文件名
+创建SSH Key:ssh-keygen -t rsa -C "邮箱"
