@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .dv {
+            width: 1000px;
+            height: 500px;
+            border: 1px solid #000;
+            position: relative;
+        }
+        .box{
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .up{
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            border-top: 50px solid yellow;
+            border-left: 50px solid yellow;
+            border-right: 50px solid transparent;
+            border-bottom: 50px solid transparent;
+            position: absolute;
+            left: 0;
+            top: 0;
+            animation: move1 0.5s linear infinite alternate;
+        }
+        .up::before{
+            content: '';
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: inset 0 0 8px 0 #000;
+            position: absolute;
+            left: 0;
+            top: -35px;
+        }
+        .down{
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            border-top: 50px solid transparent;
+            border-left: 50px solid yellow;
+            border-right: 50px solid transparent;
+            border-bottom: 50px solid yellow;
+            position: absolute;
+            left: 0;
+            top: 0;
+            animation: move2 0.5s linear infinite alternate;
+        }
+        @keyframes move1 {
+            0%{
+                transform: rotate(0deg);
+            }
+            100%{
+                transform: rotate(45deg);
+            }
+        }
+        @keyframes move2 {
+            0%{
+                transform: rotate(0deg);
+            }
+            100%{
+                transform: rotate(-45deg);
+            }
+        }
+
+        .dcls{
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: red;
+            position: absolute;
+            transition:all 1s;
+        }
+    </style>
+    <script src="jquery-1.12.4.js"></script>
+    <script>
+        $(function () {
+            //获取元素--------------------------------------------------
+            var box=$(".box");
+            var timeId = null;//计时器
+            var step=0;//每一步的距离
+            var attr="";//什么属性在变化
+            var score=0;//得分
+
+            //键盘按下事件------------------------------------------------
+            $(window).on('keydown', function (e) {
+                if(e.keyCode>=37&& e.keyCode<=40){
+                    clearInterval(timeId);
+                    console.log(e.keyCode);//左37上38右39下40
+                    if(e.keyCode==37){
+                        step=-5;
+                        attr="left";
+                    }else if(e.keyCode==38){
+                        step=-5;
+                        attr="top";
+                    }else if(e.keyCode==39){
+                        step=5;
+                        attr="left";
+                    }else if(e.keyCode==40){
+                        step=5;
+                        attr="top";
+                    }
+                    contorl(step,attr);
+                }
+            });
+
+            food();
+            var current=0;//元素当前位置
+
+            //控制运动函数------------------------------------------------
+            function contorl(step,attr) {
+                var intime=Math.floor(50-score/10);
+                timeId = setInterval(function () {
+                    current=parseInt(box.css(attr));
+                    current+=step;
+                    if(attr=="left"){
+                        current=current<=0?0:current;
+                        current=current>=900?900:current;
+                    }else{
+                        current=current<=0?0:current;
+                        current=current>=400?400:current;
+                    }
+                    box.css(attr,current);
+                    var spanx=parseInt(box.css("left"));
+                    var spany=parseInt(box.css("top"));
+                    var footx=parseInt($('.dcls').css("left"));
+                    var footy=parseInt($('.dcls').css("top"));
+                    if(spanx>(footx-50)&&spanx<(footx+50)){
+                        if(spany>(footy-30)&&spany<(footy+30)){
+                            $('.dcls').css({
+                                width:0,
+                                height:0,
+                                transitionDelay:1
+                            }).remove();
+                            food();
+                            score++;
+                            $("p").text(score);
+                        }
+                    }
+                },intime);
+            }
+
+            //分数-------------------------------------------------------
+            $("#dv").after($("<p>"+score+"</p>"));
+
+            //创建食物函数------------------------------------------------
+            function food(){
+                var randomx=Math.floor(Math.random()*190)*5;
+                var randomy=Math.floor(Math.random()*90)*5;
+                $("<div></div>").addClass("dcls")
+                        .css({
+                            left:randomx,
+                            top:randomy
+                        }).appendTo($("#dv"));
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="dv" id="dv">
+    <div class="box">
+        <div class="up">
+        </div>
+        <div class="down"></div>
+    </div>
+</div>
+</body>
+</html>
