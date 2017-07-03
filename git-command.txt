@@ -15,3 +15,8 @@
 撤销暂存区的修改,重回工作区:git reset HEAD 文件名
 删除文件:rm 文件名
 创建SSH Key:ssh-keygen -t rsa -C "邮箱"
+添加远程库在github上:git remote add origin git@github.com:tools-git/文件.git
+第一次推送本地库的所有内容到远程库:git push -u origin master
+以后提交到远程库:git push origin master
+把远程库克隆到本地库:git clone git@github.com:tools-git/文件.git
+清屏:clear
