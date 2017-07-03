@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>小人射击</title>
+<style>
+	canvas{
+    	border: 1px dashed red;
+  	}
+  	#tips{
+  		display: inline-block;
+  		margin-left: 650px;
+  	}
+  	.cols{
+  		padding: 20px;
+  		border: 1px solid #000;
+  		margin-bottom: 30px;
+  		text-align: center;
+  	}
+  	span{
+  		background-color:red;
+  		margin-left: 5px;
+  		margin-right: 5px;
+  		border-radius: 5px;
+  	}
+  	canvas{
+  		position: absolute;
+  		left: 0;
+  		right: 0;
+  	}
+</style>
+</head>
+<body>
+	<canvas width="600" height="400"></canvas>
+	<canvas width="600" height="400"></canvas>
+	<div id="tips">
+		<div class="cols">按<span>向左键</span>或<span>A键</span>控制小人向左移动</div>
+		<div class="cols">按<span>向上键</span>或<span>W键</span>控制小人向上移动</div>
+		<div class="cols">按<span>向右键</span>或<span>D键</span>控制小人向右移动</div>
+		<div class="cols">按<span>向下键</span>或<span>S键</span>控制小人向下移动</div>	
+		<div class="cols">按<span>空格键</span>控制小人停止或者开始移动</div>	
+		<div class="cols">按<span>J键</span>控制小人射击</div>	
+	</div>
+</body>
+<script>
+	var cas = document.querySelectorAll( 'canvas' )[ 0 ];
+	var ctx = cas.getContext( '2d' );
+	var cas1= document.querySelectorAll( 'canvas' )[ 1 ];
+	var ctx1= cas1.getContext( '2d' );
+	
+	var img=document.createElement("img");
+	var width,height;
+	img.src="1.png";
+	//小人动画
+	img.onload=function(){
+		width=img.width/4;
+		height=img.height/4;
+		var imgX,imgY;
+		var xIndex=0,
+			yIndex=0,
+			flag=true,
+			step=5;
+		var casHeight=0,
+			casWidth=0;
+		function draw(){
+			ctx.save();
+			xIndex++;
+			imgX=(xIndex%4)*width;
+			imgY=yIndex*height;
+			if(casWidth>cas.width-width||casWidth<0){
+				yIndex=(yIndex==1)?2:1;
+			}
+			if(casHeight>cas.height-height||casHeight<0){
+				yIndex=(yIndex==0)?3:0;
+			}
+			switch(yIndex){
+				case 1:
+					casWidth-=step;
+					break;
+				case 3:
+					casHeight-=step;
+					break;
+				case 2:
+					casWidth+=step;
+					break;
+				case 0:
+					casHeight+=step;
+					break;
+				default:
+			}
+			ctx.drawImage(img, imgX, imgY, width, height, casWidth, casHeight, width, height);
+			ctx.restore();
+		}
+		function clear(){
+			ctx.clearRect(0, 0, 600, 400);
+		}
+		var intervalId=setInterval(function(){
+			clear();
+			draw();
+		}, 100);
+
+		//键盘控制
+		window.onkeydown=function(e){
+			console.log(e.keyCode);
+			if(e.keyCode==32){
+				flag=!flag;
+				if(flag){
+					intervalId=setInterval(function(){
+						clear();
+						draw();
+					}, 100);
+				}else{
+					clearInterval(intervalId);
+				}
+			}else if(e.keyCode==74){
+				drawoo();
+			}else{
+				if(flag){
+					switch(e.keyCode){
+					case 65:
+					case 37:
+						yIndex=1;
+						break;
+					case 38:
+					case 87:
+						yIndex=3;
+						break;
+					case 39:
+					case 68:
+						yIndex=2;
+						break;
+					case 40:
+					case 83:
+						yIndex=0;
+						break;
+					default:
+
+					}
+				}
+			}
+
+			//子弹动画
+			function drawoo(){
+				var cas2=document.createElement("canvas");
+				cas2.width=5;
+				cas2.height=5;
+				var ctx2=cas2.getContext('2d');
+				ctx2.fillRect(0, 0, 5, 5);
+
+				var ooX=casWidth+45/2,
+					ooY=casHeight+60/2;
+				var ooIndex=0;
+
+				var ooldX=ooX,
+					ooldY=ooY;
+
+				ctx1.drawImage(cas2,ooX,ooY);
+				switch(yIndex){
+					case 1:
+						ooIndex=1;
+						break;
+					case 3:
+						ooIndex=3;
+						break;
+					case 2:
+						ooIndex=2;
+						break;
+					case 0:
+						ooIndex=0;
+						break;
+					default:
+				}
+				
+				setInterval(function(){
+					ctx1.clearRect(ooldX, ooldY, 5, 5);
+					switch(ooIndex){
+						case 1:
+							ooX-=step*5;
+							break;
+						case 3:
+							ooY-=step*5;
+							break;
+						case 2:
+							ooX+=step*5;
+							break;
+						case 0:
+							ooY+=step*5;
+							break;
+						default:
+					}
+					ctx1.drawImage(cas2,ooX,ooY);
+					ooldX=ooX;
+					ooldY=ooY;
+				},100);
+			}
+		}
+	}
+
+
+</script>
+</html>

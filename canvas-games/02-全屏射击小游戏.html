@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>canvas</title>
+<style>
+	canvas{
+    	border: 1px dashed red;
+  	}
+  	*{
+  		padding: 0;
+  		margin: 0;
+  	}
+  	html,
+  	body{
+  		width: 100%;
+  		height: 100%;
+  		background-color: #fff;
+  		overflow: hidden;
+  	}
+  	canvas{
+  		position: absolute;
+  		left: 0;
+  		right: 0;
+  	}
+</style>
+</head>
+<body>
+	<canvas></canvas>
+	<canvas></canvas>
+</body>
+<script>
+	var cas = document.querySelectorAll( 'canvas' )[ 1 ];
+	var ctx = cas.getContext( '2d' );
+	var body=document.querySelector('body');
+	console.log(body.offsetWidth);
+	cas.width=body.offsetWidth;
+	cas.height=body.offsetHeight;
+
+	var cas1=document.querySelectorAll( 'canvas' )[ 0 ];
+	cas1.width=body.offsetWidth;
+	cas1.height=body.offsetHeight;
+	var ctx1=cas1.getContext( '2d' );
+
+	var canvas = document.createElement( 'canvas' );
+    canvas.width = 60;
+    canvas.height = 60;
+    // 相当于坐标变换
+    var context = canvas.getContext( '2d' );
+    context.lineWidth=2;
+    context.arc(30, 30, 29, 0, 2*Math.PI);
+    context.lineTo(0, 30);
+    context.stroke();
+    context.beginPath();
+    context.moveTo(30, 0);
+    context.lineTo(30, 60);
+    context.stroke();
+
+    var oldX1,oldY1;
+    cas.onmousemove=function(e){
+    	var x=e.clientX,
+    		y=e.clientY;
+    	ctx.clearRect(0, 0, cas.width, cas.height);
+    	ctx.drawImage( canvas, x-30, y-30 );
+    	oldX1=x;
+    	oldY1=y;
+    }
+    window.onclick=function(e){
+    	if(Math.abs(e.clientX-casWidth-25)<25&&Math.abs(e.clientY-casHeight-35)<35){
+    		ctx1.clearRect(0, 0, cas1.width, cas1.height);
+	    	casWidth=Math.random()*cas.width;
+	    	casHeight=Math.random()*cas.height;
+	    	draw();
+    	}
+    }
+
+    var img=document.createElement("img");
+	var width,height;
+	img.src="1.png";
+
+	var casHeight=0,
+		casWidth=0;
+	var xIndex=0,
+		yIndex=0,
+		flag=true,
+		step=5;
+
+	var oldX2,oldY2;
+
+	function draw(){
+		xIndex++;
+		var x=(xIndex%4)*width;
+		var y=yIndex*height;
+		if(casWidth>cas.width-50||casWidth<0){
+			yIndex=(yIndex==1)?2:1;
+		}
+		if(casHeight>cas.height-65||casHeight<0){
+			yIndex=(yIndex==0)?3:0;
+		}
+		switch(yIndex){
+			case 1:
+				casWidth-=step;
+				break;
+			case 3:
+				casHeight-=step;
+				break;
+			case 2:
+				casWidth+=step;
+				break;
+			case 0:
+				casHeight+=step;
+				break;
+			default:
+		}
+		console.log(x+","+y+","+width+","+height+","+casWidth+","+casHeight+","+width+","+height);
+		ctx1.drawImage(img, x, y, width, height, casWidth, casHeight, width, height);
+		oldX2=casWidth;
+		oldY2=casHeight;
+	}
+
+	img.onload=function(){
+		width=img.width/4;
+		height=img.height/4;
+		function clear(){
+			ctx1.clearRect(0, 0, cas1.width, cas1.height);
+		}
+		draw();
+		var intervalId=setInterval(function(){
+			clear();
+			draw();
+		}, 100);
+	}
+	window.onkeydown=function(e){
+		console.log(e.keyCode);
+		if(e.keyCode==32){
+			flag=!flag;
+			if(flag){
+				intervalId=setInterval(function(){
+					clear();
+					draw();
+				}, 100);
+			}else{
+				clearInterval(intervalId);
+			}
+		}else if(flag){
+			switch(e.keyCode){
+			case 37:
+				yIndex=1;
+				break;
+			case 38:
+				yIndex=3;
+				break;
+			case 39:
+				yIndex=2;
+				break;
+			case 40:
+				yIndex=0;
+				break;
+			default:
+			}
+		}
+	}
+</script>
+</html>
